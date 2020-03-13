@@ -21,6 +21,37 @@ connection.connect(function(err) {
   postProduct();
 });
 
+inquirer.prompt([
+  {
+    type: "input",
+    name: "product",
+    message: "What is your product?"
+  },
+  {
+    type: "input",
+    message: "How much does this product cost?",
+    name: "price",
+  },
+  {
+    type: "input",
+    message: "How many of these products are you selling?",
+    name: "quantity",
+  },
+]).then(function(data) {
+
+  var filename = data.name.toLowerCase().split(' ').join('') + ".json";
+
+  fs.writeFile(filename, JSON.stringify(data, null, '\t'), function(err) {
+
+    if (err) {
+      return console.log(err);
+    }
+
+    console.log("Product input successfully gathered!");
+
+  });
+});
+
 function postProduct() {
   console.log("Posting a new product...\n");
   var query = connection.query(
